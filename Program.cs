@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace ejercicio9PostEXT3
 {
@@ -31,49 +32,38 @@ namespace ejercicio9PostEXT3
             return fraseModificada;
         }
 
-       
-
-		public static void Main(string[] args)
-		{
-
-			 
-          //Solicita al usuario ingresar una frase por consola y luego reemplaza todas las vocales por el carácter '*'.
-			Console.WriteLine("Inserte una frase");
-			string palabrasEspacios;
-			string frase = Console.ReadLine();
-            Console.WriteLine(" ");
-            Console.WriteLine("Vocales sustituidas");
-            string fraseCensurada = vocalesCambiadas(frase);
-            Console.WriteLine(fraseCensurada);
-          //Guarda la frase en una lista en la que cada celda contenta un "trozo" de la frase. La frase se dividirá por el carácter " ".
+       static private void ficheroFuncion(string frase)
+        {
+            string palabrasEspacios;
+            //Guarda la frase en una lista en la que cada celda contenta un "trozo" de la frase. La frase se dividirá por el carácter " ".
             string[] palabraArray = frase.Split(' ');
-          //Escribe en un fichero la lista que contiene la frase. Cada celda en una línea diferente del fichero. El nombre del fichero tendrá el formato: ddMMyyyy.txt
-			foreach (string palabras in palabraArray)
-			{
-				palabrasEspacios = palabras;	
-			}
-			using (StreamWriter sw = new StreamWriter(rutaFichero))
-			{
+            //Escribe en un fichero la lista que contiene la frase. Cada celda en una línea diferente del fichero. El nombre del fichero tendrá el formato: ddMMyyyy.txt
+            foreach (string palabras in palabraArray)
+            {
+                palabrasEspacios = palabras;
+            }
+            using (StreamWriter sw = new StreamWriter(rutaFichero))
+            {
                 foreach (string palabras in palabraArray)
                 {
-					
-                    sw.WriteLine (palabrasEspacios = palabras);
-					
-				}
+
+                    sw.WriteLine(palabrasEspacios = palabras);
+
+                }
             }
             Console.WriteLine(" ");
 
-            //Lee las dos últimas filas del fichero y muéstralas por consola en una sola línea.
+             //Lee las dos últimas filas del fichero y muéstralas por consola en una sola línea.
             using (StreamReader sr = new StreamReader(rutaFichero))
             {
                 string lineaAnterior = "AAA";
                 string lineaActual = "AAAA";
 
-            // Lee las líneas del archivo hasta el final, con EndofString nos pasa un valor boolean en funcion de si la posicion esta al final del fichero
+                // Lee las líneas del archivo hasta el final, con EndofString nos pasa un valor boolean en funcion de si la posicion esta al final del fichero
                 while (!sr.EndOfStream)
                 {
-                // Guarda la línea anterior antes de leer la siguiente
-                    
+                    // Guarda la línea anterior antes de leer la siguiente
+
                     lineaAnterior = lineaActual;
                     lineaActual = sr.ReadLine();
                 }
@@ -84,6 +74,10 @@ namespace ejercicio9PostEXT3
                 Console.Write(lineaActual);
             }
 
+        }
+
+        static void sustituirVocalesFaltantes(string frase)
+        {
             //Pregunta al usuario cuántas vocales faltan.
             Console.WriteLine(" ");
             Console.WriteLine(" ");
@@ -92,13 +86,13 @@ namespace ejercicio9PostEXT3
             string palabraVocalesCensuradas = vocalesCambiadas(frase);
             int asteriscos = 0;
             char[] arrayPalabraCensurada = palabraVocalesCensuradas.ToCharArray();
-            
+
             //PARA CONTAR LOS ASTERISCOS EN LA FRASE
             for (int i = 0; i < arrayPalabraCensurada.Length; i++)
             {
-                if(arrayPalabraCensurada[i] == '*')
+                if (arrayPalabraCensurada[i] == '*')
                 {
-                    asteriscos ++;
+                    asteriscos++;
                 }
             }
 
@@ -116,9 +110,30 @@ namespace ejercicio9PostEXT3
                 }
             }
 
-            string fraseFinal = new string (arrayPalabraCensurada);
+            string fraseFinal = new string(arrayPalabraCensurada);
             Console.WriteLine(" ");
             Console.WriteLine(fraseFinal);
+        }
+
+        public static void Main(string[] args)
+		{
+
+			 
+          //Solicita al usuario ingresar una frase por consola y luego reemplaza todas las vocales por el carácter '*'.
+			Console.WriteLine("Inserte una frase");
+			
+			string frase = Console.ReadLine();
+            Console.WriteLine(" ");
+            Console.WriteLine("Vocales sustituidas");
+            string fraseCensurada = vocalesCambiadas(frase);
+            Console.WriteLine(fraseCensurada);
+
+            ficheroFuncion(frase);
+
+            sustituirVocalesFaltantes(frase);
+           
+
+            
 
 
 
