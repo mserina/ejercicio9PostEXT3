@@ -9,9 +9,10 @@ namespace ejercicio9PostEXT3
 		static string rutaFichero = $"C:\\Users\\csi23-mserina\\Desktop\\{fechaHoy.ToString("ddMMyyyy")}.txt";
 
 
-        static private void  vocalesCambiadas(string frase)
+        static private string vocalesCambiadas(string frase)
 		{
-			char cacater;
+            int numeroDeVocales;
+            char cacater;
             char[] fraseArray = frase.ToCharArray();
             Char[]listaChar = { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
 			for(int i = 0; i < fraseArray.Length; i++)
@@ -20,14 +21,17 @@ namespace ejercicio9PostEXT3
 				{
                     if (fraseArray[i] == listaChar[j])
                     {
-						fraseArray[i] = '*';
-					
+						int array = fraseArray[i] = '*';					
                     }
                
                 }
 			}
-            Console.WriteLine(fraseArray);
+            string fraseModificada = new string(fraseArray);
+            
+            return fraseModificada;
         }
+
+       
 
 		public static void Main(string[] args)
 		{
@@ -39,7 +43,8 @@ namespace ejercicio9PostEXT3
 			string frase = Console.ReadLine();
             Console.WriteLine(" ");
             Console.WriteLine("Vocales sustituidas");
-            vocalesCambiadas(frase);
+            string fraseCensurada = vocalesCambiadas(frase);
+            Console.WriteLine(fraseCensurada);
           //Guarda la frase en una lista en la que cada celda contenta un "trozo" de la frase. La frase se dividirá por el carácter " ".
             string[] palabraArray = frase.Split(' ');
           //Escribe en un fichero la lista que contiene la frase. Cada celda en una línea diferente del fichero. El nombre del fichero tendrá el formato: ddMMyyyy.txt
@@ -68,16 +73,52 @@ namespace ejercicio9PostEXT3
                 while (!sr.EndOfStream)
                 {
                 // Guarda la línea anterior antes de leer la siguiente
-                    lineaActual = sr.ReadLine();
+                    
                     lineaAnterior = lineaActual;
+                    lineaActual = sr.ReadLine();
                 }
 
                 // Muestra las dos últimas líneas
                 Console.WriteLine("Dos últimas líneas del fichero:");
-                Console.Write(lineaAnterior);
+                Console.Write(lineaAnterior + " ");
                 Console.Write(lineaActual);
             }
 
+            //Pregunta al usuario cuántas vocales faltan.
+            Console.WriteLine(" ");
+            Console.WriteLine(" ");
+            Console.WriteLine("¿Cuantas lineas faltan?");
+            int respuestaUsuario = Convert.ToInt32(Console.ReadLine());
+            string palabraVocalesCensuradas = vocalesCambiadas(frase);
+            int asteriscos = 0;
+            char[] arrayPalabraCensurada = palabraVocalesCensuradas.ToCharArray();
+            
+            //PARA CONTAR LOS ASTERISCOS EN LA FRASE
+            for (int i = 0; i < arrayPalabraCensurada.Length; i++)
+            {
+                if(arrayPalabraCensurada[i] == '*')
+                {
+                    asteriscos ++;
+                }
+            }
+
+            //PARA CAMBAIR LOS ASTERISCOS POR LAS VOCALES QUE INSERRTEN LOS USUARIOS
+            if (asteriscos == respuestaUsuario)
+            {
+                for (int j = 0; j < arrayPalabraCensurada.Length - 1; j++)
+                {
+                    if (arrayPalabraCensurada[j] == '*')
+                    {
+                        Console.WriteLine("Introduzca la vocal faltante");
+                        char vocales = Convert.ToChar(Console.ReadLine());
+                        arrayPalabraCensurada[j] = vocales;
+                    }
+                }
+            }
+
+            string fraseFinal = new string (arrayPalabraCensurada);
+            Console.WriteLine(" ");
+            Console.WriteLine(fraseFinal);
 
 
 
